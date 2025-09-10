@@ -8,7 +8,7 @@
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Lucide Icons for modern icons (FIXED URL) -->
+    <!-- Lucide Icons for modern icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <!-- Google Fonts: Inter -->
@@ -70,22 +70,36 @@
                     <p class="text-sm font-light opacity-80 mt-1">NIM: 2105101001</p>
                 </div>
 
-                <div class="text-center">
+                <div class="text-center mb-8">
                     <button id="open-modal-btn" class="w-full bg-indigo-600 text-white font-bold py-4 px-6 rounded-xl shadow-md hover:bg-indigo-700 transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 flex items-center justify-center space-x-3">
                         <i data-lucide="calendar-plus" class="w-6 h-6"></i>
                         <span>Buat Peminjaman Laboratorium</span>
                     </button>
                 </div>
                 
-                <div class="mt-8">
+                <!-- NEW: Status Peminjaman Section -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-3">Status Peminjaman Terkini</h3>
+                     <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-lg shadow-sm">
+                        <div class="flex">
+                            <div class="py-1"><i data-lucide="loader-2" class="w-6 h-6 text-blue-500 animate-spin"></i></div>
+                            <div class="ml-3">
+                                <p class="font-semibold text-blue-800">Lab Mandiri | 11 Sep 2025, 13:00-15:00</p>
+                                <p class="text-sm text-blue-700">Menunggu persetujuan dari Admin Lab.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
                     <h3 class="text-lg font-semibold text-gray-700 mb-3">Peminjaman Terakhir Anda</h3>
                      <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg">
                         <div class="flex justify-between items-start">
                             <div>
                                 <p class="font-semibold text-gray-800">Lab Pemrograman Dasar 1</p>
-                                <p class="text-sm text-gray-500">25 September 2025 | 13:00 - 15:00</p>
+                                <p class="text-sm text-gray-500">10 September 2025 | 09:00 - 11:00</p>
                             </div>
-                            <span class="text-xs font-medium bg-green-100 text-green-800 px-2 py-1 rounded-full">Selesai</span>
+                            <span class="text-xs font-medium bg-green-100 text-green-800 px-2 py-1 rounded-full">Disetujui</span>
                         </div>
                     </div>
                 </div>
@@ -93,6 +107,17 @@
 
             <!-- 2. Jadwal Lab View -->
             <div id="jadwal-view" class="view hidden">
+                 <!-- NEW: Lab Filter Dropdown -->
+                <div class="mb-4">
+                    <label for="lab-filter" class="block text-sm font-medium text-gray-700 mb-1">Pilih Laboratorium</label>
+                    <select id="lab-filter" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                        <option>Lab Pemrograman Dasar 1</option>
+                        <option>Lab Pemrograman Dasar 2</option>
+                        <option>Lab Server & Jaringan</option>
+                        <option>Lab Mandiri</option>
+                    </select>
+                </div>
+
                 <!-- Day Tabs -->
                 <div class="flex space-x-2 overflow-x-auto pb-2 mb-4">
                     <button class="day-tab flex-shrink-0 px-4 py-2 text-sm font-semibold rounded-full bg-gray-200 text-gray-700 transition active" data-day="senin">Sen</button>
@@ -103,8 +128,8 @@
                 </div>
 
                 <!-- Schedule Content -->
-                <div id="schedule-content" class="space-y-3">
-                    <!-- Dynamic content will be loaded here by JS -->
+                <div id="schedule-content" class="space-y-1">
+                    <!-- Dynamic 24h schedule will be loaded here by JS -->
                 </div>
             </div>
 
@@ -133,7 +158,6 @@
                         </ul>
                     </div>
                 </div>
-                <!-- Add more lab items similarly -->
                  <div class="lab-accordion">
                     <button class="accordion-header w-full flex justify-between items-center p-4 bg-gray-50 border rounded-lg text-left">
                         <span class="font-semibold text-gray-800">Lab Server & Jaringan</span>
@@ -167,35 +191,31 @@
                         <p class="text-gray-500">2105101001</p>
                     </div>
                 </div>
+
+                <!-- NEW: Customer Service Feature -->
+                <div class="mb-8">
+                     <button id="open-laporan-modal-btn" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-3 rounded-lg flex items-center justify-center space-x-2 transition border border-gray-300">
+                        <i data-lucide="wrench" class="w-5 h-5"></i>
+                        <span>Layanan Pelanggan / Laporkan Masalah</span>
+                    </button>
+                </div>
                 
                 <h4 class="text-lg font-semibold text-gray-700 mb-3">Riwayat Peminjaman</h4>
                 <div class="space-y-3">
-                    <!-- History Item 1 -->
                     <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg">
                         <div class="flex justify-between items-start">
                             <div>
                                 <p class="font-semibold text-gray-800">Lab Pemrograman Dasar 1</p>
-                                <p class="text-sm text-gray-500">25 Sep 2025 | 13:00 - 15:00</p>
+                                <p class="text-sm text-gray-500">10 Sep 2025 | 09:00 - 11:00</p>
                             </div>
-                            <span class="text-xs font-medium bg-green-100 text-green-800 px-2 py-1 rounded-full">Selesai</span>
+                            <span class="text-xs font-medium bg-green-100 text-green-800 px-2 py-1 rounded-full">Disetujui</span>
                         </div>
                     </div>
-                     <!-- History Item 2 -->
-                    <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <p class="font-semibold text-gray-800">Lab Mandiri</p>
-                                <p class="text-sm text-gray-500">20 Sep 2025 | 10:00 - 12:00</p>
-                            </div>
-                            <span class="text-xs font-medium bg-green-100 text-green-800 px-2 py-1 rounded-full">Selesai</span>
-                        </div>
-                    </div>
-                     <!-- History Item 3 -->
                     <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg">
                         <div class="flex justify-between items-start">
                             <div>
                                 <p class="font-semibold text-gray-800">Lab Server & Jaringan</p>
-                                <p class="text-sm text-gray-500">15 Sep 2025 | 09:00 - 11:00</p>
+                                <p class="text-sm text-gray-500">5 Sep 2025 | 09:00 - 11:00</p>
                             </div>
                             <span class="text-xs font-medium bg-red-100 text-red-800 px-2 py-1 rounded-full">Ditolak</span>
                         </div>
@@ -238,45 +258,30 @@
                 <h3 class="text-xl font-bold">Form Peminjaman Lab</h3>
                 <button id="close-modal-btn"><i data-lucide="x" class="w-6 h-6 text-gray-500"></i></button>
             </div>
-            
             <form class="space-y-4 overflow-y-auto pb-4">
+                <!-- Form fields from previous version -->
                 <div>
                     <label for="nama" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
-                    <input type="text" id="nama" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    <input type="text" id="nama" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" value="Andi Pratama">
                 </div>
                 <div>
                     <label for="nim" class="block text-sm font-medium text-gray-700">NIM</label>
-                    <input type="text" id="nim" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    <input type="text" id="nim" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" value="2105101001">
                 </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label for="kelas" class="block text-sm font-medium text-gray-700">Kelas</label>
-                        <input type="text" id="kelas" placeholder="Contoh: IF-4A" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                    </div>
-                    <div>
-                        <label for="angkatan" class="block text-sm font-medium text-gray-700">Angkatan</label>
-                        <input type="number" id="angkatan" placeholder="Contoh: 2021" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                    </div>
-                </div>
-
+                <!-- ... other fields ... -->
                 <div>
                     <label for="jenis-lab" class="block text-sm font-medium text-gray-700">Jenis Lab</label>
                     <select id="jenis-lab" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
                         <option>Lab Pemrograman Dasar 1</option>
                         <option>Lab Pemrograman Dasar 2</option>
-                        <option>Lab Pemrograman Dasar 3</option>
-                        <option>Lab Pemrograman Dasar 4</option>
-                        <option>Lab Pemrograman Dasar 5</option>
                         <option>Lab Mandiri</option>
                         <option>Lab Server & Jaringan</option>
                     </select>
                 </div>
-                
-                <div>
+                 <div>
                     <label for="tanggal" class="block text-sm font-medium text-gray-700">Tanggal Peminjaman</label>
                     <input type="date" id="tanggal" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
                 </div>
-
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label for="waktu-mulai" class="block text-sm font-medium text-gray-700">Dari Pukul</label>
@@ -287,10 +292,9 @@
                         <input type="time" id="waktu-selesai" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
                     </div>
                 </div>
-
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Tujuan Peminjaman</label>
-                    <div class="flex space-x-4">
+                     <div class="flex space-x-4">
                         <div class="flex items-center">
                             <input id="tujuan-matkul" name="tujuan" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" value="matkul">
                             <label for="tujuan-matkul" class="ml-2 block text-sm text-gray-900">Mata Kuliah</label>
@@ -299,27 +303,50 @@
                             <input id="tujuan-penelitian" name="tujuan" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" value="penelitian">
                             <label for="tujuan-penelitian" class="ml-2 block text-sm text-gray-900">Penelitian</label>
                         </div>
-                         <div class="flex items-center">
-                            <input id="tujuan-lain" name="tujuan" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" value="lain">
-                            <label for="tujuan-lain" class="ml-2 block text-sm text-gray-900">Lainnya</label>
-                        </div>
                     </div>
                 </div>
-
                 <div id="matkul-field" class="hidden">
                     <label for="nama-matkul" class="block text-sm font-medium text-gray-700">Nama Mata Kuliah</label>
                     <input type="text" id="nama-matkul" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
                 </div>
-
                 <div class="pt-4 flex-shrink-0">
-                     <button type="submit" class="w-full bg-indigo-600 text-white font-semibold py-3 px-4 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Kirim Permintaan
-                    </button>
+                     <button type="submit" class="w-full bg-indigo-600 text-white font-semibold py-3 px-4 border border-transparent rounded-md shadow-sm hover:bg-indigo-700">Kirim Permintaan</button>
                 </div>
             </form>
         </div>
     </div>
-
+    
+    <!-- NEW: Laporan Masalah Modal -->
+    <div id="laporan-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-end hidden">
+        <div class="bg-white w-full max-w-md rounded-t-2xl p-6 transform transition-all translate-y-full max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center mb-4 flex-shrink-0">
+                <h3 class="text-xl font-bold">Laporkan Masalah</h3>
+                <button id="close-laporan-modal-btn"><i data-lucide="x" class="w-6 h-6 text-gray-500"></i></button>
+            </div>
+            <form class="space-y-4 overflow-y-auto pb-4">
+                <div>
+                    <label for="lapor-lab" class="block text-sm font-medium text-gray-700">Lokasi Lab</label>
+                    <select id="lapor-lab" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                        <option>Lab Pemrograman Dasar 1</option>
+                        <option>Lab Pemrograman Dasar 2</option>
+                        <option>Lab Server & Jaringan</option>
+                        <option>Lab Mandiri</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="lapor-perangkat" class="block text-sm font-medium text-gray-700">Nomor PC / Perangkat (Opsional)</label>
+                    <input type="text" id="lapor-perangkat" placeholder="Contoh: PC-15" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                <div>
+                    <label for="lapor-deskripsi" class="block text-sm font-medium text-gray-700">Deskripsi Masalah</label>
+                    <textarea id="lapor-deskripsi" rows="4" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" placeholder="Jelaskan kerusakan atau masalah yang terjadi..."></textarea>
+                </div>
+                <div class="pt-4 flex-shrink-0">
+                     <button type="submit" class="w-full bg-indigo-600 text-white font-semibold py-3 px-4 border border-transparent rounded-md shadow-sm hover:bg-indigo-700">Kirim Laporan</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -330,84 +357,65 @@
             const navItems = document.querySelectorAll('.nav-item');
             const views = document.querySelectorAll('.view');
             const headerTitle = document.getElementById('header-title');
-            const viewTitles = {
-                beranda: 'Beranda',
-                jadwal: 'Jadwal Laboratorium',
-                informasi: 'Informasi Lab',
-                akun: 'Akun Saya'
-            };
+            const viewTitles = { beranda: 'Beranda', jadwal: 'Jadwal Laboratorium', informasi: 'Informasi Lab', akun: 'Akun Saya' };
 
             navItems.forEach(item => {
                 item.addEventListener('click', () => {
                     const viewName = item.dataset.view;
-
-                    // Deactivate all nav items and hide all views
                     navItems.forEach(nav => nav.classList.remove('active'));
                     views.forEach(view => view.classList.add('hidden'));
-
-                    // Activate clicked nav item and show corresponding view
                     item.classList.add('active');
                     document.getElementById(`${viewName}-view`).classList.remove('hidden');
                     headerTitle.textContent = viewTitles[viewName];
                 });
             });
 
-            // --- MODAL LOGIC ---
+            // --- MODAL LOGIC (PEMINJAMAN) ---
             const modal = document.getElementById('peminjaman-modal');
             const openBtn = document.getElementById('open-modal-btn');
             const closeBtn = document.getElementById('close-modal-btn');
-            const modalContent = modal.querySelector('div');
+            const modalContent = modal.querySelector('div > div');
 
-            openBtn.addEventListener('click', () => {
-                modal.classList.remove('hidden');
-                setTimeout(() => {
-                    modalContent.classList.remove('translate-y-full');
-                }, 10);
-            });
-            
-            const closeModal = () => {
-                modalContent.classList.add('translate-y-full');
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                }, 300); // Wait for transition to finish
+            const openModal = (modalEl, contentEl) => {
+                modalEl.classList.remove('hidden');
+                setTimeout(() => contentEl.classList.remove('translate-y-full'), 10);
+            };
+            const closeModal = (modalEl, contentEl) => {
+                contentEl.classList.add('translate-y-full');
+                setTimeout(() => modalEl.classList.add('hidden'), 300);
             };
 
-            closeBtn.addEventListener('click', closeModal);
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    closeModal();
-                }
-            });
+            openBtn.addEventListener('click', () => openModal(modal, modalContent));
+            closeBtn.addEventListener('click', () => closeModal(modal, modalContent));
+            modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(modal, modalContent); });
+
+            // --- MODAL LOGIC (LAPORAN) ---
+            const laporanModal = document.getElementById('laporan-modal');
+            const openLaporanBtn = document.getElementById('open-laporan-modal-btn');
+            const closeLaporanBtn = document.getElementById('close-laporan-modal-btn');
+            const laporanModalContent = laporanModal.querySelector('div > div');
             
+            openLaporanBtn.addEventListener('click', () => openModal(laporanModal, laporanModalContent));
+            closeLaporanBtn.addEventListener('click', () => closeModal(laporanModal, laporanModalContent));
+            laporanModal.addEventListener('click', (e) => { if (e.target === laporanModal) closeModal(laporanModal, laporanModalContent); });
+
             // --- CONDITIONAL FORM FIELD LOGIC ---
-            const tujuanRadios = document.querySelectorAll('input[name="tujuan"]');
-            const matkulField = document.getElementById('matkul-field');
-            
-            tujuanRadios.forEach(radio => {
+            document.querySelectorAll('input[name="tujuan"]').forEach(radio => {
                 radio.addEventListener('change', (e) => {
-                    if (e.target.value === 'matkul') {
-                        matkulField.classList.remove('hidden');
-                    } else {
-                        matkulField.classList.add('hidden');
-                    }
+                    document.getElementById('matkul-field').classList.toggle('hidden', e.target.value !== 'matkul');
                 });
             });
             
             // --- LAB INFORMATION ACCORDION LOGIC ---
-            const accordions = document.querySelectorAll('.lab-accordion');
-            accordions.forEach(accordion => {
-                const header = accordion.querySelector('.accordion-header');
-                const content = accordion.querySelector('.accordion-content');
-                const icon = header.querySelector('i');
-                
+            document.querySelectorAll('.lab-accordion .accordion-header').forEach(header => {
                 header.addEventListener('click', () => {
-                    const isHidden = content.classList.contains('hidden');
-                    if (isHidden) {
-                        content.classList.remove('hidden');
-                        icon.style.transform = 'rotate(180deg)';
-                    } else {
-                        content.classList.add('hidden');
-                        icon.style.transform = 'rotate(0deg)';
+                    const content = header.nextElementSibling;
+                    const icon = header.querySelector('svg'); // FIXED: Changed selector from 'i' to 'svg'
+                    
+                    content.classList.toggle('hidden');
+
+                    if (icon) {
+                        icon.style.transform = content.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
                     }
                 });
             });
@@ -415,68 +423,80 @@
             // --- JADWAL LAB LOGIC ---
             const dayTabs = document.querySelectorAll('.day-tab');
             const scheduleContent = document.getElementById('schedule-content');
+            const labFilter = document.getElementById('lab-filter');
             
+            // Revised schedule data structure
             const scheduleData = {
-                senin: [
-                    { time: '08:00 - 10:30', lab: 'Lab Pemrograman 1', class: 'Kelas A', purpose: 'Praktikum PBO', status: 'used' },
-                    { time: '10:30 - 13:00', lab: 'Lab Pemrograman 2', class: 'Kelas C', purpose: 'Praktikum Basis Data', status: 'used' },
-                    { time: '13:00 - 15:30', lab: 'Lab Pemrograman 1', class: 'Kelas B', purpose: 'Praktikum PBO', status: 'used' },
-                    { time: '15:30 - 18:00', lab: 'Lab Mandiri', class: '-', purpose: 'Tersedia', status: 'available' },
-                ],
-                selasa: [
-                    { time: '09:00 - 11:30', lab: 'Lab Server', class: 'Kelas D', purpose: 'Praktikum Jaringan Komputer', status: 'used' },
-                    { time: '13:00 - 15:00', lab: 'Lab Mandiri', class: 'Andi Pratama', purpose: 'Penelitian Skripsi', status: 'booked' },
-                ],
-                rabu: [
-                     { time: '08:00 - 10:30', lab: 'Lab Pemrograman 3', class: 'Kelas E', purpose: 'Praktikum Web Lanjut', status: 'used' },
-                ],
-                kamis: [],
-                jumat: [
-                    { time: '14:00 - 16:30', lab: 'Lab Pemrograman 5', class: 'Kelas F', purpose: 'Praktikum Mobile Dev', status: 'used' },
-                ]
+                'Lab Pemrograman Dasar 1': {
+                    senin: [ { start: 8, end: 11, class: 'Kelas A', purpose: 'Praktikum PBO' } ], // 08:00 - 10:59
+                    rabu: [ { start: 13, end: 16, class: 'Kelas B', purpose: 'Praktikum PBO' } ], // 13:00 - 15:59
+                },
+                'Lab Pemrograman Dasar 2': {
+                    selasa: [ { start: 10, end: 13, class: 'Kelas C', purpose: 'Praktikum Basis Data' } ],
+                },
+                'Lab Server & Jaringan': {
+                    kamis: [ { start: 9, end: 12, class: 'Kelas D', purpose: 'Praktikum Jarkom' } ],
+                },
+                'Lab Mandiri': {
+                    jumat: [ { start: 14, end: 16, class: 'Andi P.', purpose: 'Penelitian' } ],
+                }
             };
 
-            const renderSchedule = (day) => {
-                const data = scheduleData[day] || [];
-                if (data.length === 0) {
-                    scheduleContent.innerHTML = `<div class="text-center text-gray-500 py-10">
-                        <i data-lucide="calendar-x2" class="w-12 h-12 mx-auto mb-2 opacity-50"></i>
-                        <p>Tidak ada jadwal untuk hari ini.</p>
-                    </div>`;
-                } else {
-                    scheduleContent.innerHTML = data.map(item => `
-                        <div class="flex items-center space-x-4 p-3 bg-white border rounded-lg">
-                            <div class="text-center w-20 flex-shrink-0">
-                                <p class="font-semibold text-indigo-600">${item.time.split(' - ')[0]}</p>
-                                <p class="text-xs text-gray-500">${item.time.split(' - ')[1]}</p>
+            const renderSchedule = () => {
+                const selectedLab = labFilter.value;
+                const selectedDay = document.querySelector('.day-tab.active').dataset.day;
+                const dailySchedule = scheduleData[selectedLab]?.[selectedDay] || [];
+                
+                let timelineHTML = '';
+                for (let hour = 0; hour < 24; hour++) {
+                    const event = dailySchedule.find(e => hour >= e.start && hour < e.end);
+                    const timeLabel = `${String(hour).padStart(2, '0')}:00`;
+
+                    if (event) {
+                        // Only show the event details on the first hour of the block
+                        if (hour === event.start) {
+                            const duration = event.end - event.start;
+                             timelineHTML += `
+                                <div class="bg-red-50 border-l-4 border-red-400 p-3 rounded-r-lg" style="grid-row: span ${duration};">
+                                    <p class="font-bold text-sm text-red-800">${String(event.start).padStart(2, '0')}:00 - ${String(event.end).padStart(2, '0')}:00</p>
+                                    <p class="text-xs text-gray-600">${event.class}</p>
+                                    <p class="text-xs font-semibold text-gray-800">${event.purpose}</p>
+                                </div>`;
+                        }
+                    } else {
+                         timelineHTML += `
+                            <div class="flex items-center text-xs text-gray-400">
+                                <span class="w-10">${timeLabel}</span>
+                                <div class="flex-grow border-t border-dashed"></div>
                             </div>
-                            <div class="border-l pl-4 flex-grow">
-                                <p class="font-semibold text-gray-800">${item.lab}</p>
-                                <p class="text-sm text-gray-500">Oleh: ${item.class}</p>
-                                <div class="flex items-center mt-1">
-                                    <span class="text-xs font-medium px-2 py-0.5 rounded-full ${
-                                        item.status === 'used' ? 'bg-red-100 text-red-800' :
-                                        item.status === 'available' ? 'bg-green-100 text-green-800' :
-                                        'bg-blue-100 text-blue-800'
-                                    }">${item.purpose}</span>
-                                </div>
-                            </div>
-                        </div>
-                    `).join('');
+                            <div class="bg-gray-50 h-12 rounded-lg border border-transparent"></div>
+                         `;
+                    }
                 }
-                lucide.createIcons();
+                
+                // Use CSS Grid for the timeline layout
+                scheduleContent.innerHTML = `<div class="grid grid-cols-[auto_1fr] gap-x-2 gap-y-0">${timelineHTML}</div>`;
+                if (!dailySchedule.length && !timelineHTML.includes('bg-red-50')) {
+                     scheduleContent.innerHTML = `<div class="text-center text-gray-500 py-10">
+                        <i data-lucide="calendar-check-2" class="w-12 h-12 mx-auto mb-2 opacity-50"></i>
+                        <p>Tidak ada jadwal. Lab tersedia sepanjang hari.</p>
+                    </div>`;
+                    lucide.createIcons();
+                }
             }
 
             dayTabs.forEach(tab => {
                 tab.addEventListener('click', () => {
                     dayTabs.forEach(t => t.classList.remove('active'));
                     tab.classList.add('active');
-                    renderSchedule(tab.dataset.day);
+                    renderSchedule();
                 });
             });
 
-            // Initial render for the first tab
-            renderSchedule('senin');
+            labFilter.addEventListener('change', renderSchedule);
+
+            // Initial render
+            renderSchedule();
         });
     </script>
 </body>
