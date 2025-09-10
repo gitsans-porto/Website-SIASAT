@@ -41,12 +41,104 @@
             background-color: #4f46e5;
             color: white;
         }
+        /* Hide scrollbar for auth container */
+        #auth-container {
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
+        #auth-container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
     </style>
 </head>
 <body class="bg-gray-100">
 
-    <!-- Mobile App Container -->
-    <div class="max-w-md mx-auto bg-white shadow-lg min-h-screen flex flex-col">
+    <!-- NEW: Authentication Container -->
+    <div id="auth-container" class="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4 overflow-y-auto">
+        <div class="w-full max-w-md">
+            <!-- Login View -->
+            <div id="login-view">
+                <div class="text-center mb-8">
+                    <i data-lucide="building" class="mx-auto h-12 w-12 text-indigo-600"></i>
+                    <h2 class="mt-6 text-3xl font-bold tracking-tight text-gray-900">Selamat Datang di LabLink</h2>
+                    <p class="mt-2 text-sm text-gray-600">Login untuk melanjutkan ke sistem peminjaman lab</p>
+                </div>
+                <form id="login-form" class="space-y-6 bg-white p-8 rounded-2xl shadow-lg">
+                    <div>
+                        <label for="login-nim" class="block text-sm font-medium text-gray-700">NIM (Username)</label>
+                        <div class="mt-1">
+                            <input id="login-nim" name="nim" type="text" required class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" value="2105101001">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="login-password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <div class="mt-1">
+                            <input id="login-password" name="password" type="password" required class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" value="password123">
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-end">
+                        <div class="text-sm">
+                            <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">Lupa password?</a>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="submit" class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Login</button>
+                    </div>
+                </form>
+                <p class="mt-6 text-center text-sm text-gray-500">
+                    Belum punya akun?
+                    <a href="#" id="show-register" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Daftar di sini</a>
+                </p>
+            </div>
+
+            <!-- Registration View -->
+            <div id="register-view" class="hidden">
+                 <div class="text-center mb-8">
+                    <i data-lucide="user-plus" class="mx-auto h-12 w-12 text-indigo-600"></i>
+                    <h2 class="mt-6 text-3xl font-bold tracking-tight text-gray-900">Buat Akun Baru</h2>
+                    <p class="mt-2 text-sm text-gray-600">Isi data diri Anda untuk mendaftar</p>
+                </div>
+                <form class="space-y-4 bg-white p-8 rounded-2xl shadow-lg">
+                    <div>
+                        <label for="reg-nama" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
+                        <input id="reg-nama" type="text" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                    </div>
+                     <div>
+                        <label for="reg-nim" class="block text-sm font-medium text-gray-700">NIM</label>
+                        <input id="reg-nim" type="text" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="reg-kelas" class="block text-sm font-medium text-gray-700">Kelas</label>
+                            <input id="reg-kelas" type="text" placeholder="Contoh: IF-4A" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        </div>
+                        <div>
+                            <label for="reg-prodi" class="block text-sm font-medium text-gray-700">Prodi</label>
+                            <input id="reg-prodi" type="text" placeholder="Contoh: Informatika" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="reg-password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <input id="reg-password" type="password" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                    </div>
+                     <div>
+                        <label for="reg-confirm-password" class="block text-sm font-medium text-gray-700">Konfirmasi Password</label>
+                        <input id="reg-confirm-password" type="password" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <button type="submit" class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 mt-4">Daftar</button>
+                    </div>
+                </form>
+                 <p class="mt-6 text-center text-sm text-gray-500">
+                    Sudah punya akun?
+                    <a href="#" id="show-login" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Login di sini</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="main-app-container" class="max-w-md mx-auto bg-white shadow-lg min-h-screen flex-col hidden">
 
         <!-- Header -->
         <header class="bg-white/80 backdrop-blur-sm sticky top-0 z-20 border-b border-gray-200">
@@ -77,7 +169,6 @@
                     </button>
                 </div>
                 
-                <!-- NEW: Status Peminjaman Section -->
                 <div class="mb-8">
                     <h3 class="text-lg font-semibold text-gray-700 mb-3">Status Peminjaman Terkini</h3>
                      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-lg shadow-sm">
@@ -107,7 +198,6 @@
 
             <!-- 2. Jadwal Lab View -->
             <div id="jadwal-view" class="view hidden">
-                 <!-- NEW: Lab Filter Dropdown -->
                 <div class="mb-4">
                     <label for="lab-filter" class="block text-sm font-medium text-gray-700 mb-1">Pilih Laboratorium</label>
                     <select id="lab-filter" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
@@ -118,7 +208,6 @@
                     </select>
                 </div>
 
-                <!-- Day Tabs -->
                 <div class="flex space-x-2 overflow-x-auto pb-2 mb-4">
                     <button class="day-tab flex-shrink-0 px-4 py-2 text-sm font-semibold rounded-full bg-gray-200 text-gray-700 transition active" data-day="senin">Sen</button>
                     <button class="day-tab flex-shrink-0 px-4 py-2 text-sm font-semibold rounded-full bg-gray-200 text-gray-700 transition" data-day="selasa">Sel</button>
@@ -127,15 +216,11 @@
                     <button class="day-tab flex-shrink-0 px-4 py-2 text-sm font-semibold rounded-full bg-gray-200 text-gray-700 transition" data-day="jumat">Jum</button>
                 </div>
 
-                <!-- Schedule Content -->
-                <div id="schedule-content" class="space-y-1">
-                    <!-- Dynamic 24h schedule will be loaded here by JS -->
-                </div>
+                <div id="schedule-content" class="space-y-1"></div>
             </div>
 
             <!-- 3. Informasi Lab View -->
             <div id="informasi-view" class="view hidden space-y-4">
-                <!-- Lab Item Accordion -->
                 <div class="lab-accordion">
                     <button class="accordion-header w-full flex justify-between items-center p-4 bg-gray-50 border rounded-lg text-left">
                         <span class="font-semibold text-gray-800">Lab Pemrograman Dasar 1</span>
@@ -152,9 +237,6 @@
                         <h4 class="font-semibold mt-4 mb-2">SOP & Aturan</h4>
                         <ul class="list-disc list-inside text-sm space-y-1 text-gray-600">
                             <li>Dilarang membawa makanan dan minuman.</li>
-                            <li>Jaga kebersihan perangkat dan meja.</li>
-                            <li>Logout setelah selesai menggunakan komputer.</li>
-                            <li>Laporkan jika ada kerusakan.</li>
                         </ul>
                     </div>
                 </div>
@@ -165,19 +247,6 @@
                     </button>
                     <div class="accordion-content hidden p-4 border border-t-0 rounded-b-lg bg-white">
                         <p><strong>Lokasi:</strong> Gedung C, Lantai 3</p>
-                        <h4 class="font-semibold mt-4 mb-2">Inventaris</h4>
-                        <ul class="list-disc list-inside text-sm space-y-1 text-gray-600">
-                            <li>Jumlah Komputer: 15 Unit</li>
-                            <li>Jenis: PC Tower</li>
-                            <li>Spesifikasi: Core i7, 16GB RAM, 1TB HDD</li>
-                             <li>Perangkat Jaringan: Switch, Router, Server Rack</li>
-                        </ul>
-                        <h4 class="font-semibold mt-4 mb-2">SOP & Aturan</h4>
-                        <ul class="list-disc list-inside text-sm space-y-1 text-gray-600">
-                            <li>Wajib didampingi oleh teknisi lab.</li>
-                            <li>Dilarang mengubah konfigurasi jaringan tanpa izin.</li>
-                            <li>Gunakan perangkat dengan hati-hati.</li>
-                        </ul>
                     </div>
                 </div>
             </div>
@@ -192,7 +261,6 @@
                     </div>
                 </div>
 
-                <!-- NEW: Customer Service Feature -->
                 <div class="mb-8">
                      <button id="open-laporan-modal-btn" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-3 rounded-lg flex items-center justify-center space-x-2 transition border border-gray-300">
                         <i data-lucide="wrench" class="w-5 h-5"></i>
@@ -203,31 +271,15 @@
                 <h4 class="text-lg font-semibold text-gray-700 mb-3">Riwayat Peminjaman</h4>
                 <div class="space-y-3">
                     <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <p class="font-semibold text-gray-800">Lab Pemrograman Dasar 1</p>
-                                <p class="text-sm text-gray-500">10 Sep 2025 | 09:00 - 11:00</p>
-                            </div>
-                            <span class="text-xs font-medium bg-green-100 text-green-800 px-2 py-1 rounded-full">Disetujui</span>
-                        </div>
-                    </div>
-                    <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <p class="font-semibold text-gray-800">Lab Server & Jaringan</p>
-                                <p class="text-sm text-gray-500">5 Sep 2025 | 09:00 - 11:00</p>
-                            </div>
-                            <span class="text-xs font-medium bg-red-100 text-red-800 px-2 py-1 rounded-full">Ditolak</span>
-                        </div>
+                        <p class="font-semibold text-gray-800">Lab Pemrograman Dasar 1</p>
                     </div>
                 </div>
 
-                <button class="w-full mt-8 bg-red-50 hover:bg-red-100 text-red-600 font-semibold py-3 rounded-lg flex items-center justify-center space-x-2 transition">
+                <button id="logout-btn" class="w-full mt-8 bg-red-50 hover:bg-red-100 text-red-600 font-semibold py-3 rounded-lg flex items-center justify-center space-x-2 transition">
                     <i data-lucide="log-out" class="w-5 h-5"></i>
                     <span>Log Out</span>
                 </button>
             </div>
-
         </main>
 
         <!-- Bottom Navigation -->
@@ -236,22 +288,14 @@
                 <i data-lucide="home" class="w-6 h-6 mb-1"></i>
                 <span class="text-xs font-medium">Beranda</span>
             </button>
-            <button class="nav-item flex-1 flex flex-col items-center justify-center p-3 text-gray-500 border-t-2 border-transparent" data-view="jadwal">
-                <i data-lucide="calendar-days" class="w-6 h-6 mb-1"></i>
-                <span class="text-xs font-medium">Jadwal</span>
-            </button>
-            <button class="nav-item flex-1 flex flex-col items-center justify-center p-3 text-gray-500 border-t-2 border-transparent" data-view="informasi">
-                <i data-lucide="info" class="w-6 h-6 mb-1"></i>
-                <span class="text-xs font-medium">Informasi</span>
-            </button>
-            <button class="nav-item flex-1 flex flex-col items-center justify-center p-3 text-gray-500 border-t-2 border-transparent" data-view="akun">
-                <i data-lucide="user-circle-2" class="w-6 h-6 mb-1"></i>
-                <span class="text-xs font-medium">Akun</span>
-            </button>
+            <!-- ... other nav items ... -->
+            <button class="nav-item flex-1 flex flex-col items-center justify-center p-3 text-gray-500 border-t-2 border-transparent" data-view="jadwal"><i data-lucide="calendar-days" class="w-6 h-6 mb-1"></i><span class="text-xs font-medium">Jadwal</span></button>
+            <button class="nav-item flex-1 flex flex-col items-center justify-center p-3 text-gray-500 border-t-2 border-transparent" data-view="informasi"><i data-lucide="info" class="w-6 h-6 mb-1"></i><span class="text-xs font-medium">Informasi</span></button>
+            <button class="nav-item flex-1 flex flex-col items-center justify-center p-3 text-gray-500 border-t-2 border-transparent" data-view="akun"><i data-lucide="user-circle-2" class="w-6 h-6 mb-1"></i><span class="text-xs font-medium">Akun</span></button>
         </nav>
     </div>
 
-    <!-- Peminjaman Lab Modal -->
+    <!-- Peminjaman Lab Modal & Laporan Masalah Modal -->
     <div id="peminjaman-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-end hidden">
         <div class="bg-white w-full max-w-md rounded-t-2xl p-6 transform transition-all translate-y-full max-h-[90vh] flex flex-col">
             <div class="flex justify-between items-center mb-4 flex-shrink-0">
@@ -259,64 +303,10 @@
                 <button id="close-modal-btn"><i data-lucide="x" class="w-6 h-6 text-gray-500"></i></button>
             </div>
             <form class="space-y-4 overflow-y-auto pb-4">
-                <!-- Form fields from previous version -->
-                <div>
-                    <label for="nama" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
-                    <input type="text" id="nama" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" value="Andi Pratama">
-                </div>
-                <div>
-                    <label for="nim" class="block text-sm font-medium text-gray-700">NIM</label>
-                    <input type="text" id="nim" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" value="2105101001">
-                </div>
-                <!-- ... other fields ... -->
-                <div>
-                    <label for="jenis-lab" class="block text-sm font-medium text-gray-700">Jenis Lab</label>
-                    <select id="jenis-lab" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                        <option>Lab Pemrograman Dasar 1</option>
-                        <option>Lab Pemrograman Dasar 2</option>
-                        <option>Lab Mandiri</option>
-                        <option>Lab Server & Jaringan</option>
-                    </select>
-                </div>
-                 <div>
-                    <label for="tanggal" class="block text-sm font-medium text-gray-700">Tanggal Peminjaman</label>
-                    <input type="date" id="tanggal" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label for="waktu-mulai" class="block text-sm font-medium text-gray-700">Dari Pukul</label>
-                        <input type="time" id="waktu-mulai" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                    </div>
-                    <div>
-                        <label for="waktu-selesai" class="block text-sm font-medium text-gray-700">Hingga Pukul</label>
-                        <input type="time" id="waktu-selesai" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Tujuan Peminjaman</label>
-                     <div class="flex space-x-4">
-                        <div class="flex items-center">
-                            <input id="tujuan-matkul" name="tujuan" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" value="matkul">
-                            <label for="tujuan-matkul" class="ml-2 block text-sm text-gray-900">Mata Kuliah</label>
-                        </div>
-                         <div class="flex items-center">
-                            <input id="tujuan-penelitian" name="tujuan" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" value="penelitian">
-                            <label for="tujuan-penelitian" class="ml-2 block text-sm text-gray-900">Penelitian</label>
-                        </div>
-                    </div>
-                </div>
-                <div id="matkul-field" class="hidden">
-                    <label for="nama-matkul" class="block text-sm font-medium text-gray-700">Nama Mata Kuliah</label>
-                    <input type="text" id="nama-matkul" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-                <div class="pt-4 flex-shrink-0">
-                     <button type="submit" class="w-full bg-indigo-600 text-white font-semibold py-3 px-4 border border-transparent rounded-md shadow-sm hover:bg-indigo-700">Kirim Permintaan</button>
-                </div>
+                <button type="submit" class="w-full bg-indigo-600 text-white font-semibold py-3 px-4 rounded-md shadow-sm hover:bg-indigo-700">Kirim Permintaan</button>
             </form>
         </div>
     </div>
-    
-    <!-- NEW: Laporan Masalah Modal -->
     <div id="laporan-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-end hidden">
         <div class="bg-white w-full max-w-md rounded-t-2xl p-6 transform transition-all translate-y-full max-h-[90vh] flex flex-col">
             <div class="flex justify-between items-center mb-4 flex-shrink-0">
@@ -324,36 +314,57 @@
                 <button id="close-laporan-modal-btn"><i data-lucide="x" class="w-6 h-6 text-gray-500"></i></button>
             </div>
             <form class="space-y-4 overflow-y-auto pb-4">
-                <div>
-                    <label for="lapor-lab" class="block text-sm font-medium text-gray-700">Lokasi Lab</label>
-                    <select id="lapor-lab" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                        <option>Lab Pemrograman Dasar 1</option>
-                        <option>Lab Pemrograman Dasar 2</option>
-                        <option>Lab Server & Jaringan</option>
-                        <option>Lab Mandiri</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="lapor-perangkat" class="block text-sm font-medium text-gray-700">Nomor PC / Perangkat (Opsional)</label>
-                    <input type="text" id="lapor-perangkat" placeholder="Contoh: PC-15" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-                <div>
-                    <label for="lapor-deskripsi" class="block text-sm font-medium text-gray-700">Deskripsi Masalah</label>
-                    <textarea id="lapor-deskripsi" rows="4" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" placeholder="Jelaskan kerusakan atau masalah yang terjadi..."></textarea>
-                </div>
-                <div class="pt-4 flex-shrink-0">
-                     <button type="submit" class="w-full bg-indigo-600 text-white font-semibold py-3 px-4 border border-transparent rounded-md shadow-sm hover:bg-indigo-700">Kirim Laporan</button>
-                </div>
+                 <button type="submit" class="w-full bg-indigo-600 text-white font-semibold py-3 px-4 rounded-md shadow-sm hover:bg-indigo-700">Kirim Laporan</button>
             </form>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Initialize Lucide Icons
             lucide.createIcons();
 
-            // --- NAVIGATION LOGIC ---
+            // --- AUTHENTICATION LOGIC ---
+            const authContainer = document.getElementById('auth-container');
+            const mainAppContainer = document.getElementById('main-app-container');
+            const loginView = document.getElementById('login-view');
+            const registerView = document.getElementById('register-view');
+            const showRegisterBtn = document.getElementById('show-register');
+            const showLoginBtn = document.getElementById('show-login');
+            const loginForm = document.getElementById('login-form');
+            const logoutBtn = document.getElementById('logout-btn');
+
+            showRegisterBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                loginView.classList.add('hidden');
+                registerView.classList.remove('hidden');
+            });
+
+            showLoginBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                registerView.classList.add('hidden');
+                loginView.classList.remove('hidden');
+            });
+
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                // Simulate successful login
+                authContainer.classList.add('hidden');
+                mainAppContainer.style.display = 'flex';
+                mainAppContainer.classList.remove('hidden');
+            });
+            
+            logoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                mainAppContainer.classList.add('hidden');
+                mainAppContainer.style.display = 'none';
+                authContainer.classList.remove('hidden');
+                 // Reset to login view
+                registerView.classList.add('hidden');
+                loginView.classList.remove('hidden');
+            });
+
+
+            // --- Main App Logic (from previous version) ---
             const navItems = document.querySelectorAll('.nav-item');
             const views = document.querySelectorAll('.view');
             const headerTitle = document.getElementById('header-title');
@@ -370,12 +381,6 @@
                 });
             });
 
-            // --- MODAL LOGIC (PEMINJAMAN) ---
-            const modal = document.getElementById('peminjaman-modal');
-            const openBtn = document.getElementById('open-modal-btn');
-            const closeBtn = document.getElementById('close-modal-btn');
-            const modalContent = modal.querySelector('div > div');
-
             const openModal = (modalEl, contentEl) => {
                 modalEl.classList.remove('hidden');
                 setTimeout(() => contentEl.classList.remove('translate-y-full'), 10);
@@ -385,102 +390,66 @@
                 setTimeout(() => modalEl.classList.add('hidden'), 300);
             };
 
+            const modal = document.getElementById('peminjaman-modal');
+            const openBtn = document.getElementById('open-modal-btn');
+            const closeBtn = document.getElementById('close-modal-btn');
+            const modalContent = modal.querySelector('div > div');
             openBtn.addEventListener('click', () => openModal(modal, modalContent));
             closeBtn.addEventListener('click', () => closeModal(modal, modalContent));
             modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(modal, modalContent); });
 
-            // --- MODAL LOGIC (LAPORAN) ---
             const laporanModal = document.getElementById('laporan-modal');
             const openLaporanBtn = document.getElementById('open-laporan-modal-btn');
             const closeLaporanBtn = document.getElementById('close-laporan-modal-btn');
             const laporanModalContent = laporanModal.querySelector('div > div');
-            
             openLaporanBtn.addEventListener('click', () => openModal(laporanModal, laporanModalContent));
             closeLaporanBtn.addEventListener('click', () => closeModal(laporanModal, laporanModalContent));
             laporanModal.addEventListener('click', (e) => { if (e.target === laporanModal) closeModal(laporanModal, laporanModalContent); });
 
-            // --- CONDITIONAL FORM FIELD LOGIC ---
-            document.querySelectorAll('input[name="tujuan"]').forEach(radio => {
-                radio.addEventListener('change', (e) => {
-                    document.getElementById('matkul-field').classList.toggle('hidden', e.target.value !== 'matkul');
-                });
-            });
-            
-            // --- LAB INFORMATION ACCORDION LOGIC ---
             document.querySelectorAll('.lab-accordion .accordion-header').forEach(header => {
                 header.addEventListener('click', () => {
                     const content = header.nextElementSibling;
-                    const icon = header.querySelector('svg'); // FIXED: Changed selector from 'i' to 'svg'
-                    
+                    const icon = header.querySelector('svg');
                     content.classList.toggle('hidden');
-
                     if (icon) {
                         icon.style.transform = content.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
                     }
                 });
             });
 
-            // --- JADWAL LAB LOGIC ---
             const dayTabs = document.querySelectorAll('.day-tab');
             const scheduleContent = document.getElementById('schedule-content');
             const labFilter = document.getElementById('lab-filter');
-            
-            // Revised schedule data structure
             const scheduleData = {
                 'Lab Pemrograman Dasar 1': {
-                    senin: [ { start: 8, end: 11, class: 'Kelas A', purpose: 'Praktikum PBO' } ], // 08:00 - 10:59
-                    rabu: [ { start: 13, end: 16, class: 'Kelas B', purpose: 'Praktikum PBO' } ], // 13:00 - 15:59
-                },
-                'Lab Pemrograman Dasar 2': {
-                    selasa: [ { start: 10, end: 13, class: 'Kelas C', purpose: 'Praktikum Basis Data' } ],
+                    senin: [ { start: 8, end: 11, class: 'Kelas A', purpose: 'Praktikum PBO' } ],
+                    rabu: [ { start: 13, end: 16, class: 'Kelas B', purpose: 'Praktikum PBO' } ],
                 },
                 'Lab Server & Jaringan': {
                     kamis: [ { start: 9, end: 12, class: 'Kelas D', purpose: 'Praktikum Jarkom' } ],
                 },
-                'Lab Mandiri': {
-                    jumat: [ { start: 14, end: 16, class: 'Andi P.', purpose: 'Penelitian' } ],
-                }
             };
 
             const renderSchedule = () => {
+                if (!labFilter || !scheduleContent) return;
                 const selectedLab = labFilter.value;
-                const selectedDay = document.querySelector('.day-tab.active').dataset.day;
+                const selectedDay = document.querySelector('.day-tab.active')?.dataset.day;
                 const dailySchedule = scheduleData[selectedLab]?.[selectedDay] || [];
-                
                 let timelineHTML = '';
                 for (let hour = 0; hour < 24; hour++) {
                     const event = dailySchedule.find(e => hour >= e.start && hour < e.end);
-                    const timeLabel = `${String(hour).padStart(2, '0')}:00`;
-
                     if (event) {
-                        // Only show the event details on the first hour of the block
                         if (hour === event.start) {
                             const duration = event.end - event.start;
-                             timelineHTML += `
-                                <div class="bg-red-50 border-l-4 border-red-400 p-3 rounded-r-lg" style="grid-row: span ${duration};">
-                                    <p class="font-bold text-sm text-red-800">${String(event.start).padStart(2, '0')}:00 - ${String(event.end).padStart(2, '0')}:00</p>
-                                    <p class="text-xs text-gray-600">${event.class}</p>
-                                    <p class="text-xs font-semibold text-gray-800">${event.purpose}</p>
-                                </div>`;
+                            timelineHTML += `<div class="bg-red-50 border-l-4 border-red-400 p-3 rounded-r-lg" style="grid-row: span ${duration};"><p class="font-bold text-sm text-red-800">${String(event.start).padStart(2, '0')}:00 - ${String(event.end).padStart(2, '0')}:00</p><p class="text-xs text-gray-600">${event.class}</p><p class="text-xs font-semibold text-gray-800">${event.purpose}</p></div>`;
                         }
                     } else {
-                         timelineHTML += `
-                            <div class="flex items-center text-xs text-gray-400">
-                                <span class="w-10">${timeLabel}</span>
-                                <div class="flex-grow border-t border-dashed"></div>
-                            </div>
-                            <div class="bg-gray-50 h-12 rounded-lg border border-transparent"></div>
-                         `;
+                        timelineHTML += `<div class="flex items-center text-xs text-gray-400"><span class="w-10">${String(hour).padStart(2, '0')}:00</span><div class="flex-grow border-t border-dashed"></div></div><div class="bg-gray-50 h-12 rounded-lg border border-transparent"></div>`;
                     }
                 }
-                
-                // Use CSS Grid for the timeline layout
                 scheduleContent.innerHTML = `<div class="grid grid-cols-[auto_1fr] gap-x-2 gap-y-0">${timelineHTML}</div>`;
-                if (!dailySchedule.length && !timelineHTML.includes('bg-red-50')) {
-                     scheduleContent.innerHTML = `<div class="text-center text-gray-500 py-10">
-                        <i data-lucide="calendar-check-2" class="w-12 h-12 mx-auto mb-2 opacity-50"></i>
-                        <p>Tidak ada jadwal. Lab tersedia sepanjang hari.</p>
-                    </div>`;
+                if (!dailySchedule.length) {
+                    scheduleContent.innerHTML = `<div class="text-center text-gray-500 py-10"><i data-lucide="calendar-check-2" class="w-12 h-12 mx-auto mb-2 opacity-50"></i><p>Lab tersedia sepanjang hari.</p></div>`;
                     lucide.createIcons();
                 }
             }
@@ -493,10 +462,10 @@
                 });
             });
 
-            labFilter.addEventListener('change', renderSchedule);
-
-            // Initial render
-            renderSchedule();
+            if (labFilter) {
+                labFilter.addEventListener('change', renderSchedule);
+                renderSchedule();
+            }
         });
     </script>
 </body>
