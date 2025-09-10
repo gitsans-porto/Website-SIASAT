@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LabLink - Peminjaman Lab</title>
+    <title>LabLink - Sistem Peminjaman & Manajemen</title>
     
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -17,151 +17,303 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* Custom styles */
         body { font-family: 'Inter', sans-serif; }
-        .main-content::-webkit-scrollbar { width: 4px; }
-        .main-content::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 20px; }
+        .main-content::-webkit-scrollbar, .admin-main::-webkit-scrollbar { width: 6px; }
+        .main-content::-webkit-scrollbar-thumb, .admin-main::-webkit-scrollbar-thumb { background-color: #9ca3af; border-radius: 20px; }
         .nav-item.active svg, .nav-item.active span { color: #4f46e5; }
         .nav-item.active { border-top-color: #4f46e5; }
-        .day-tab.active { background-color: #4f46e5; color: white; }
-        #auth-container { -ms-overflow-style: none; scrollbar-width: none; }
-        #auth-container::-webkit-scrollbar { display: none; }
+        .admin-nav-item.active { background-color: #e0e7ff; color: #3730a3; }
         .feedback-alert { display: none; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; text-align: center; font-weight: 500; }
         .feedback-alert.success { background-color: #dcfce7; color: #166534; }
         .feedback-alert.error { background-color: #fee2e2; color: #991b1b; }
         input:read-only { background-color: #f3f4f6; cursor: not-allowed; }
+        /* Print styles for reports */
+        @media print {
+            body * { visibility: hidden; }
+            #laporan-print-area, #laporan-print-area * { visibility: visible; }
+            #laporan-print-area { position: absolute; left: 0; top: 0; width: 100%; }
+            .no-print { display: none; }
+        }
     </style>
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-200">
 
-    <!-- Authentication Container -->
-    <div id="auth-container" class="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4 overflow-y-auto">
-        <div class="w-full max-w-md">
-            <!-- Login View -->
-            <div id="login-view">
-                <div class="text-center mb-8"><i data-lucide="building" class="mx-auto h-12 w-12 text-indigo-600"></i><h2 class="mt-6 text-3xl font-bold tracking-tight text-gray-900">Selamat Datang di LabLink</h2><p class="mt-2 text-sm text-gray-600">Login untuk melanjutkan</p></div>
-                <div id="login-feedback" class="feedback-alert"></div>
-                <form id="login-form" class="space-y-6 bg-white p-8 rounded-2xl shadow-lg">
-                    <input id="login-nim" name="nim" type="text" placeholder="NIM (Username)" required class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
-                    <input id="login-password" name="password" type="password" placeholder="Password" required class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
-                    <button type="submit" class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700">Login</button>
-                </form>
-                <p class="mt-6 text-center text-sm text-gray-500">Belum punya akun? <a href="#" id="show-register" class="font-semibold text-indigo-600 hover:text-indigo-500">Daftar di sini</a></p>
-            </div>
-            <!-- Registration View -->
-            <div id="register-view" class="hidden">
-                 <div class="text-center mb-8"><i data-lucide="user-plus" class="mx-auto h-12 w-12 text-indigo-600"></i><h2 class="mt-6 text-3xl font-bold tracking-tight text-gray-900">Buat Akun Baru</h2></div>
-                <div id="register-feedback" class="feedback-alert"></div>
-                <form id="register-form" class="space-y-4 bg-white p-8 rounded-2xl shadow-lg">
-                    <input id="reg-nama" type="text" placeholder="Nama Lengkap" required class="block w-full rounded-md border-gray-300 shadow-sm sm:text-sm">
-                    <input id="reg-nim" type="text" placeholder="NIM" required class="block w-full rounded-md border-gray-300 shadow-sm sm:text-sm">
-                    <input id="reg-password" type="password" placeholder="Password" required class="block w-full rounded-md border-gray-300 shadow-sm sm:text-sm">
-                    <input id="reg-confirm-password" type="password" placeholder="Konfirmasi Password" required class="block w-full rounded-md border-gray-300 shadow-sm sm:text-sm">
-                    <button type="submit" class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700">Daftar</button>
-                </form>
-                 <p class="mt-6 text-center text-sm text-gray-500">Sudah punya akun? <a href="#" id="show-login" class="font-semibold text-indigo-600 hover:text-indigo-500">Login di sini</a></p>
-            </div>
+    <!-- Universal Authentication Container -->
+    <div id="auth-container" class="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
+        <!-- Login View -->
+        <div id="login-view" class="w-full max-w-md">
+            <div class="text-center mb-8"><i data-lucide="building-2" class="mx-auto h-12 w-12 text-indigo-600"></i><h2 class="mt-6 text-3xl font-bold text-gray-900">Selamat Datang di LabLink</h2></div>
+            <div id="login-feedback" class="feedback-alert"></div>
+            <form id="login-form" class="space-y-4 bg-white p-8 rounded-2xl shadow-lg">
+                <select id="login-role" class="block w-full rounded-md border-gray-300 shadow-sm"><option value="Mahasiswa">Mahasiswa</option><option value="Dosen">Dosen</option><option value="Operator">Operator (Admin)</option></select>
+                <input id="login-nim" type="text" placeholder="NIM / Username" required class="block w-full rounded-md border-gray-300 shadow-sm">
+                <input id="login-password" type="password" placeholder="Password" required class="block w-full rounded-md border-gray-300 shadow-sm">
+                <button type="submit" class="w-full bg-indigo-600 text-white font-semibold py-3 rounded-md shadow-sm hover:bg-indigo-700">Login</button>
+            </form>
+            <p class="mt-6 text-center text-sm">Belum punya akun? <a href="#" id="show-register" class="font-semibold text-indigo-600">Daftar di sini</a></p>
+        </div>
+        <!-- Registration View -->
+        <div id="register-view" class="w-full max-w-md hidden">
+            <div class="text-center mb-8"><i data-lucide="user-plus" class="mx-auto h-12 w-12 text-indigo-600"></i><h2 class="mt-6 text-3xl font-bold text-gray-900">Buat Akun Baru</h2></div>
+            <div id="register-feedback" class="feedback-alert"></div>
+            <form id="register-form" class="space-y-4 bg-white p-8 rounded-2xl shadow-lg">
+                <select id="register-role" class="block w-full rounded-md border-gray-300 shadow-sm"><option value="Mahasiswa">Mahasiswa</option><option value="Dosen">Dosen</option><option value="Operator">Operator (Admin)</option></select>
+                <input id="reg-nama" type="text" placeholder="Nama Lengkap" required class="block w-full rounded-md border-gray-300 shadow-sm">
+                <input id="reg-nim" type="text" placeholder="NIM / Username" required class="block w-full rounded-md border-gray-300 shadow-sm">
+                <input id="reg-password" type="password" placeholder="Password" required class="block w-full rounded-md border-gray-300 shadow-sm">
+                <button type="submit" class="w-full bg-indigo-600 text-white font-semibold py-3 rounded-md shadow-sm hover:bg-indigo-700">Daftar</button>
+            </form>
+            <p class="mt-6 text-center text-sm">Sudah punya akun? <a href="#" id="show-login" class="font-semibold text-indigo-600">Login di sini</a></p>
         </div>
     </div>
 
-    <!-- Main App Container -->
+    <!-- Student/Dosen App Container -->
     <div id="main-app-container" class="max-w-md mx-auto bg-white shadow-lg min-h-screen flex-col hidden">
-        <header class="bg-white/80 backdrop-blur-sm sticky top-0 z-20 border-b border-gray-200">
-            <div class="px-4 py-3 flex justify-between items-center"><h1 id="header-title" class="text-xl font-bold text-gray-800">Beranda</h1><div class="relative"><i data-lucide="bell" class="w-6 h-6 text-gray-500"></i><span class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span></div></div>
-        </header>
-        <main class="flex-grow overflow-y-auto main-content p-4 pb-24">
-            <!-- 1. Beranda View -->
-            <div id="beranda-view" class="view">
-                <div class="bg-indigo-600 text-white p-6 rounded-xl shadow-lg mb-6"><p class="text-sm opacity-80">Selamat Datang,</p><h2 id="profile-nama-beranda" class="text-2xl font-bold"></h2><p id="profile-nim-beranda" class="text-sm font-light opacity-80 mt-1"></p></div>
-                <div class="text-center mb-8"><button id="open-modal-btn" class="w-full bg-indigo-600 text-white font-bold py-4 px-6 rounded-xl shadow-md hover:bg-indigo-700 transition-transform transform hover:scale-105"><i data-lucide="calendar-plus" class="w-6 h-6 inline-block mr-2"></i>Buat Peminjaman Laboratorium</button></div>
-                <div id="status-peminjaman-container" class="mb-8"><h3 class="text-lg font-semibold text-gray-700 mb-3">Status Peminjaman Terkini</h3></div>
-                <div><h3 class="text-lg font-semibold text-gray-700 mb-3">Riwayat Peminjaman</h3><div class="bg-gray-50 border border-gray-200 p-4 rounded-lg"><p class="font-semibold text-gray-800">Tidak ada riwayat</p></div></div>
-            </div>
-            <!-- 2. Jadwal Lab View -->
-            <div id="jadwal-view" class="view hidden">
-                <div class="mb-4"><label for="lab-filter" class="block text-sm font-medium text-gray-700 mb-1">Pilih Laboratorium</label><select id="lab-filter" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"><option>Lab Pemrograman Dasar 1</option><option>Lab Server & Jaringan</option></select></div>
-                <div class="flex space-x-2 overflow-x-auto pb-2 mb-4">
-                    <button class="day-tab flex-shrink-0 px-4 py-2 text-sm font-semibold rounded-full bg-gray-200 text-gray-700 transition active" data-day="senin">Sen</button>
-                    <button class="day-tab flex-shrink-0 px-4 py-2 text-sm font-semibold rounded-full bg-gray-200 text-gray-700 transition" data-day="selasa">Sel</button>
+        <!-- Header, Main Content, and Navigation for Students -->
+    </div>
+
+    <!-- Admin App Container -->
+    <div id="admin-app-container" class="h-screen w-full bg-gray-100 flex hidden">
+        <!-- Sidebar Navigation for Admin -->
+        <aside class="w-64 bg-white shadow-md flex flex-col no-print">
+            <div class="p-6 text-center border-b"><h2 class="text-2xl font-bold text-indigo-600">LabLink Admin</h2></div>
+            <nav class="flex-1 p-4 space-y-2">
+                <a href="#" class="admin-nav-item flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 active" data-view="admin-dashboard"><i data-lucide="layout-dashboard" class="w-5 h-5"></i><span>Dashboard</span></a>
+                <a href="#" class="admin-nav-item flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100" data-view="admin-requests"><i data-lucide="file-check-2" class="w-5 h-5"></i><span>Pengajuan</span></a>
+                <a href="#" class="admin-nav-item flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100" data-view="admin-users"><i data-lucide="users" class="w-5 h-5"></i><span>Kelola User</span></a>
+                <a href="#" class="admin-nav-item flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100" data-view="admin-inventory"><i data-lucide="archive" class="w-5 h-5"></i><span>Inventaris</span></a>
+                <a href="#" class="admin-nav-item flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100" data-view="admin-reports"><i data-lucide="printer" class="w-5 h-5"></i><span>Laporan</span></a>
+            </nav>
+            <div class="p-4 border-t"><button id="admin-logout-btn" class="w-full flex items-center justify-center space-x-2 p-3 bg-red-50 text-red-600 rounded-lg hover:bg-red-100"><i data-lucide="log-out" class="w-5 h-5"></i><span>Log Out</span></button></div>
+        </aside>
+
+        <!-- Main Admin Content Area -->
+        <main class="flex-1 flex flex-col">
+            <header class="bg-white shadow-sm p-4 no-print"><h1 id="admin-header-title" class="text-xl font-semibold">Dashboard</h1></header>
+            <div class="flex-1 p-6 overflow-y-auto admin-main">
+                <!-- 1. Admin Dashboard View -->
+                <div id="admin-dashboard-view" class="admin-view">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="bg-white p-6 rounded-lg shadow"><h3 class="text-gray-500">Pengajuan Baru</h3><p id="metric-requests" class="text-3xl font-bold">0</p></div>
+                        <div class="bg-white p-6 rounded-lg shadow"><h3 class="text-gray-500">Total User</h3><p id="metric-users" class="text-3xl font-bold">0</p></div>
+                        <div class="bg-white p-6 rounded-lg shadow"><h3 class="text-gray-500">Item Inventaris</h3><p id="metric-inventory" class="text-3xl font-bold">0</p></div>
+                        <div class="bg-white p-6 rounded-lg shadow"><h3 class="text-gray-500">Laporan Masuk</h3><p id="metric-issues" class="text-3xl font-bold">0</p></div>
+                    </div>
                 </div>
-                <div id="schedule-content" class="space-y-1"></div>
-            </div>
-            <!-- 3. Informasi Lab View -->
-            <div id="informasi-view" class="view hidden space-y-4">
-                <div class="lab-accordion"><button class="accordion-header w-full flex justify-between items-center p-4 bg-gray-50 border rounded-lg text-left"><span class="font-semibold text-gray-800">Lab Pemrograman Dasar 1</span><i data-lucide="chevron-down" class="w-5 h-5 transition-transform"></i></button><div class="accordion-content hidden p-4 border border-t-0 rounded-b-lg bg-white"><p><strong>Lokasi:</strong> Gedung A, Lantai 2</p></div></div>
-            </div>
-            <!-- 4. Akun Pengguna View -->
-            <div id="akun-view" class="view hidden">
-                <div class="flex items-center space-x-4 mb-8"><img src="https://placehold.co/80x80/e2e8f0/4a5568?text=AV" id="profile-avatar" class="w-20 h-20 rounded-full" alt="Foto Profil"><div><h3 id="profile-nama-akun" class="text-xl font-bold"></h3><p id="profile-nim-akun" class="text-gray-500"></p></div></div>
-                <div class="mb-8"><button id="open-laporan-modal-btn" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-3 rounded-lg flex items-center justify-center space-x-2 transition border border-gray-300"><i data-lucide="wrench" class="w-5 h-5"></i><span>Layanan Pelanggan</span></button></div>
-                <button id="logout-btn" class="w-full mt-8 bg-red-50 hover:bg-red-100 text-red-600 font-semibold py-3 rounded-lg flex items-center justify-center space-x-2 transition"><i data-lucide="log-out" class="w-5 h-5"></i><span>Log Out</span></button>
+                <!-- 2. Loan Requests View -->
+                <div id="admin-requests-view" class="admin-view hidden"><div id="requests-list" class="space-y-4"></div></div>
+                <!-- 3. User Management View -->
+                <div id="admin-users-view" class="admin-view hidden bg-white p-6 rounded-lg shadow"><div id="users-table-container"></div></div>
+                <!-- 4. Inventory Management View -->
+                <div id="admin-inventory-view" class="admin-view hidden bg-white p-6 rounded-lg shadow"><div id="inventory-table-container"></div></div>
+                <!-- 5. Reports View -->
+                <div id="admin-reports-view" class="admin-view hidden">
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <button id="print-report-btn" class="mb-4 bg-indigo-600 text-white font-semibold py-2 px-4 rounded-md shadow-sm hover:bg-indigo-700 no-print">Cetak Laporan</button>
+                        <div id="laporan-print-area"><div id="reports-table-container"></div></div>
+                    </div>
+                </div>
             </div>
         </main>
-        <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t border-gray-200 flex justify-around">
-            <button class="nav-item flex-1 flex flex-col items-center justify-center p-3 text-gray-500 border-t-2 border-transparent active" data-view="beranda"><i data-lucide="home" class="w-6 h-6 mb-1"></i><span class="text-xs font-medium">Beranda</span></button>
-            <button class="nav-item flex-1 flex flex-col items-center justify-center p-3 text-gray-500 border-t-2 border-transparent" data-view="jadwal"><i data-lucide="calendar-days" class="w-6 h-6 mb-1"></i><span class="text-xs font-medium">Jadwal</span></button>
-            <button class="nav-item flex-1 flex flex-col items-center justify-center p-3 text-gray-500 border-t-2 border-transparent" data-view="informasi"><i data-lucide="info" class="w-6 h-6 mb-1"></i><span class="text-xs font-medium">Informasi</span></button>
-            <button class="nav-item flex-1 flex flex-col items-center justify-center p-3 text-gray-500 border-t-2 border-transparent" data-view="akun"><i data-lucide="user-circle-2" class="w-6 h-6 mb-1"></i><span class="text-xs font-medium">Akun</span></button>
-        </nav>
     </div>
-
-    <!-- Peminjaman Lab Modal -->
-    <div id="peminjaman-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-end hidden">
-        <div class="bg-white w-full max-w-md rounded-t-2xl p-6 transform transition-all translate-y-full max-h-[90vh] flex flex-col">
-            <div class="flex justify-between items-center mb-4 flex-shrink-0"><h3 class="text-xl font-bold">Form Peminjaman Lab</h3><button id="close-modal-btn"><i data-lucide="x" class="w-6 h-6 text-gray-500"></i></button></div>
-            <form id="form-peminjaman" class="space-y-4 overflow-y-auto pb-4">
-                <div><label for="peminjaman-nama" class="block text-sm font-medium text-gray-700">Nama Lengkap</label><input id="peminjaman-nama" type="text" readonly class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"></div>
-                <div><label for="peminjaman-nim" class="block text-sm font-medium text-gray-700">NIM</label><input id="peminjaman-nim" type="text" readonly class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"></div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div><label for="peminjaman-kelas" class="block text-sm font-medium text-gray-700">Kelas</label><select id="peminjaman-kelas" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option></select></div>
-                    <div><label for="peminjaman-prodi" class="block text-sm font-medium text-gray-700">Program Studi</label><select id="peminjaman-prodi" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"><option>Sistem Informasi</option><option>Pendidikan Teknik Informatika</option></select></div>
-                </div>
-                <div><label for="peminjaman-lab" class="block text-sm font-medium text-gray-700">Jenis Lab</label><select id="peminjaman-lab" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"><option>Lab Pemrograman Dasar 1</option><option>Lab Server & Jaringan</option></select></div>
-                <div><label for="peminjaman-tanggal" class="block text-sm font-medium text-gray-700">Tanggal Peminjaman</label><input id="peminjaman-tanggal" type="date" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"></div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div><label for="peminjaman-waktu-mulai" class="block text-sm font-medium text-gray-700">Dari Pukul</label><input id="peminjaman-waktu-mulai" type="time" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"></div>
-                    <div><label for="peminjaman-waktu-hingga" class="block text-sm font-medium text-gray-700">Hingga Pukul</label><input id="peminjaman-waktu-hingga" type="time" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"></div>
-                </div>
-                <div><label class="block text-sm font-medium text-gray-700">Tujuan Peminjaman</label><div class="mt-2 space-y-2">
-                        <div class="flex items-center"><input id="tujuan-matkul" name="tujuan" type="radio" value="Mata Kuliah" checked class="h-4 w-4"><label for="tujuan-matkul" class="ml-3 block text-sm text-gray-700">Mata Kuliah</label></div>
-                        <div class="flex items-center"><input id="tujuan-penelitian" name="tujuan" type="radio" value="Penelitian" class="h-4 w-4"><label for="tujuan-penelitian" class="ml-3 block text-sm text-gray-700">Penelitian</label></div>
-                        <div class="flex items-center"><input id="tujuan-lainnya" name="tujuan" type="radio" value="Lainnya" class="h-4 w-4"><label for="tujuan-lainnya" class="ml-3 block text-sm text-gray-700">Lainnya</label></div>
-                </div></div>
-                <div id="tujuan-lainnya-container" class="hidden mt-2"><label for="peminjaman-tujuan-manual" class="block text-sm font-medium text-gray-700">Sebutkan Tujuan</label><input id="peminjaman-tujuan-manual" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></div>
-                <button type="submit" class="w-full bg-indigo-600 text-white font-semibold py-3 rounded-md shadow-sm">Kirim Permintaan</button>
-            </form>
-        </div>
-    </div>
-    <!-- Other Modals -->
-    <div id="laporan-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-end hidden"><div class="bg-white w-full max-w-md rounded-t-2xl p-6 transform transition-all translate-y-full max-h-[90vh] flex flex-col"><h3 class="text-xl font-bold">Laporkan Masalah</h3><button id="close-laporan-modal-btn"><i data-lucide="x"></i></button></div></div>
 
     <script>
+    // Simplified script for demonstration. Production would need a proper framework.
     document.addEventListener('DOMContentLoaded', function () {
         lucide.createIcons();
-        let peminjamanTerkini = []; let currentUser = null;
-        const authContainer = document.getElementById('auth-container'), mainAppContainer = document.getElementById('main-app-container'), loginView = document.getElementById('login-view'), registerView = document.getElementById('register-view'), showRegisterBtn = document.getElementById('show-register'), showLoginBtn = document.getElementById('show-login'), loginForm = document.getElementById('login-form'), registerForm = document.getElementById('register-form'), logoutBtn = document.getElementById('logout-btn'), statusContainer = document.getElementById('status-peminjaman-container'), peminjamanForm = document.getElementById('form-peminjaman'), modal = document.getElementById('peminjaman-modal'), laporanModal = document.getElementById('laporan-modal'), tujuanRadioButtons = document.querySelectorAll('input[name="tujuan"]'), tujuanLainnyaContainer = document.getElementById('tujuan-lainnya-container'), tujuanLainnyaInput = document.getElementById('peminjaman-tujuan-manual'), navItems = document.querySelectorAll('.nav-item'), views = document.querySelectorAll('.view'), headerTitle = document.getElementById('header-title');
-        const showFeedback = (id, msg, type) => { const el = document.getElementById(id); if(el) { el.textContent = msg; el.className = `feedback-alert ${type}`; el.style.display = 'block'; setTimeout(() => { el.style.display = 'none'; }, 3000); }};
-        const updateUserProfile = (user) => { const i = user.nama.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase(); document.getElementById('profile-nama-beranda').textContent = user.nama; document.getElementById('profile-nim-beranda').textContent = `NIM: ${user.nim}`; document.getElementById('profile-nama-akun').textContent = user.nama; document.getElementById('profile-nim-akun').textContent = user.nim; document.getElementById('profile-avatar').src = `https://placehold.co/80x80/e2e8f0/4a5568?text=${i}`; };
-        const renderStatusPeminjaman = () => { while (statusContainer.children.length > 1) { statusContainer.lastChild.remove(); } if (peminjamanTerkini.length > 0) { const p = peminjamanTerkini[0]; const tgl = new Date(p.tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }); statusContainer.insertAdjacentHTML('beforeend', `<div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-lg shadow-sm"><div class="flex"><div class="py-1"><i data-lucide="loader-2" class="w-6 h-6 text-blue-500 animate-spin"></i></div><div class="ml-3"><p class="font-semibold text-blue-800">${p.lab} | ${tgl}, ${p.waktuMulai}-${p.waktuHingga}</p><p class="text-sm text-blue-700">Tujuan: ${p.tujuan}</p></div></div></div>`); } else { statusContainer.insertAdjacentHTML('beforeend', `<div class="text-center text-gray-500 py-8 px-4 bg-gray-50 rounded-lg border border-dashed"><i data-lucide="folder-search" class="w-12 h-12 mx-auto mb-2 opacity-50"></i><p>Belum ada peminjaman.</p></div>`); } lucide.createIcons(); };
-        const showMainApp = (user) => { currentUser = user; updateUserProfile(user); renderStatusPeminjaman(); authContainer.classList.add('hidden'); mainAppContainer.style.display = 'flex'; mainAppContainer.classList.remove('hidden'); };
-        const showAuthScreen = () => { currentUser = null; mainAppContainer.classList.add('hidden'); mainAppContainer.style.display = 'none'; authContainer.classList.remove('hidden'); registerView.classList.add('hidden'); loginView.classList.remove('hidden'); loginForm.reset(); };
-        const openModal = (el) => { const c = el.querySelector('div > div'); if(el.id === 'peminjaman-modal' && currentUser) { document.getElementById('peminjaman-nama').value = currentUser.nama; document.getElementById('peminjaman-nim').value = currentUser.nim; } el.classList.remove('hidden'); setTimeout(() => c.classList.remove('translate-y-full'), 10); };
-        const closeModal = (el) => { const c = el.querySelector('div > div'); c.classList.add('translate-y-full'); setTimeout(() => el.classList.add('hidden'), 300); };
-        const checkLoginStatus = () => { const nim = sessionStorage.getItem('loggedInUser'); if (nim) { const json = localStorage.getItem(`user_${nim}`); if(json) showMainApp(JSON.parse(json)); else showAuthScreen(); }};
-        showRegisterBtn.addEventListener('click', (e) => { e.preventDefault(); loginView.classList.add('hidden'); registerView.classList.remove('hidden'); });
-        showLoginBtn.addEventListener('click', (e) => { e.preventDefault(); registerView.classList.add('hidden'); loginView.classList.remove('hidden'); });
-        registerForm.addEventListener('submit', (e) => { e.preventDefault(); const p = document.getElementById('reg-password').value, n = document.getElementById('reg-nim').value; if (p !== document.getElementById('reg-confirm-password').value) { showFeedback('register-feedback', 'Password tidak cocok!', 'error'); return; } if (localStorage.getItem(`user_${n}`)) { showFeedback('register-feedback', 'NIM sudah terdaftar.', 'error'); return; } localStorage.setItem(`user_${n}`, JSON.stringify({ nama: document.getElementById('reg-nama').value, nim: n, password: p })); showFeedback('register-feedback', 'Registrasi berhasil!', 'success'); setTimeout(() => { registerView.classList.add('hidden'); loginView.classList.remove('hidden'); }, 1500); });
-        loginForm.addEventListener('submit', (e) => { e.preventDefault(); const n = document.getElementById('login-nim').value; const json = localStorage.getItem(`user_${n}`); if (!json) { showFeedback('login-feedback', 'NIM tidak ditemukan.', 'error'); return; } const user = JSON.parse(json); if (user.password !== document.getElementById('login-password').value) { showFeedback('login-feedback', 'Password salah.', 'error'); return; } sessionStorage.setItem('loggedInUser', user.nim); showMainApp(user); });
-        logoutBtn.addEventListener('click', (e) => { e.preventDefault(); sessionStorage.removeItem('loggedInUser'); peminjamanTerkini = []; showAuthScreen(); });
-        document.getElementById('open-modal-btn').addEventListener('click', () => openModal(modal));
-        document.getElementById('close-modal-btn').addEventListener('click', () => closeModal(modal));
-        document.getElementById('open-laporan-modal-btn').addEventListener('click', () => openModal(laporanModal));
-        document.getElementById('close-laporan-modal-btn')?.addEventListener('click', () => closeModal(laporanModal));
-        tujuanRadioButtons.forEach(r => r.addEventListener('change', () => { const isLainnya = r.value === 'Lainnya' && r.checked; tujuanLainnyaContainer.classList.toggle('hidden', !isLainnya); tujuanLainnyaInput.required = isLainnya; }));
-        peminjamanForm.addEventListener('submit', (e) => { e.preventDefault(); const tujuan = document.querySelector('input[name="tujuan"]:checked').value; const data = { lab: document.getElementById('peminjaman-lab').value, tanggal: document.getElementById('peminjaman-tanggal').value, waktuMulai: document.getElementById('peminjaman-waktu-mulai').value, waktuHingga: document.getElementById('peminjaman-waktu-hingga').value, tujuan: tujuan === 'Lainnya' ? tujuanLainnyaInput.value : tujuan, }; peminjamanTerkini.unshift(data); renderStatusPeminjaman(); closeModal(modal); peminjamanForm.reset(); tujuanLainnyaContainer.classList.add('hidden'); });
-        const viewTitles = { beranda: 'Beranda', jadwal: 'Jadwal Lab', informasi: 'Informasi Lab', akun: 'Akun Saya' };
-        navItems.forEach(item => item.addEventListener('click', () => { const viewName = item.dataset.view; navItems.forEach(nav => nav.classList.remove('active')); views.forEach(view => view.classList.add('hidden')); item.classList.add('active'); document.getElementById(`${viewName}-view`).classList.remove('hidden'); headerTitle.textContent = viewTitles[viewName]; }));
-        document.querySelectorAll('.lab-accordion .accordion-header').forEach(h => h.addEventListener('click', () => { h.nextElementSibling.classList.toggle('hidden'); }));
+
+        // --- DATABASE SIMULATION ---
+        // Initialize with some default data if empty
+        const initDB = () => {
+            if (!localStorage.getItem('users')) {
+                const defaultAdmin = { nama: 'Admin Operator', nim: 'admin', password: 'admin', role: 'Operator' };
+                const defaultStudent = { nama: 'Budi Mahasiswa', nim: '123', password: '123', role: 'Mahasiswa' };
+                localStorage.setItem('users', JSON.stringify([defaultAdmin, defaultStudent]));
+            }
+            if (!localStorage.getItem('peminjaman')) { localStorage.setItem('peminjaman', JSON.stringify([])); }
+            if (!localStorage.getItem('inventory')) {
+                const defaultInventory = [ { id: Date.now(), name: 'PC Core i5', qty: 20, condition: 'Baik' } ];
+                localStorage.setItem('inventory', JSON.stringify(defaultInventory));
+            }
+        };
+        initDB();
+
+        // --- AUTH LOGIC ---
+        const authContainer = document.getElementById('auth-container');
+        const studentApp = document.getElementById('main-app-container');
+        const adminApp = document.getElementById('admin-app-container');
+        const loginView = document.getElementById('login-view');
+        const registerView = document.getElementById('register-view');
+
+        document.getElementById('show-register').addEventListener('click', e => { e.preventDefault(); loginView.classList.add('hidden'); registerView.classList.remove('hidden'); });
+        document.getElementById('show-login').addEventListener('click', e => { e.preventDefault(); registerView.classList.add('hidden'); loginView.classList.remove('hidden'); });
+        
+        document.getElementById('login-form').addEventListener('submit', e => {
+            e.preventDefault();
+            const users = JSON.parse(localStorage.getItem('users'));
+            const username = document.getElementById('login-nim').value;
+            const password = document.getElementById('login-password').value;
+            const role = document.getElementById('login-role').value;
+            const user = users.find(u => u.nim === username && u.password === password && u.role === role);
+            
+            if (user) {
+                sessionStorage.setItem('loggedInUser', JSON.stringify(user));
+                if (user.role === 'Operator') { showAdminApp(); } 
+                else { /* showStudentApp(); */ alert('Tampilan Mahasiswa/Dosen belum diimplementasikan di versi ini.'); }
+            } else {
+                alert('Username, password, atau peran salah.');
+            }
+        });
+
+        document.getElementById('register-form').addEventListener('submit', e => {
+            e.preventDefault();
+            const users = JSON.parse(localStorage.getItem('users'));
+            const newUser = {
+                nama: document.getElementById('reg-nama').value,
+                nim: document.getElementById('reg-nim').value,
+                password: document.getElementById('reg-password').value,
+                role: document.getElementById('register-role').value,
+            };
+            if(users.find(u => u.nim === newUser.nim)) { alert('Username sudah ada.'); return; }
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            alert('Registrasi berhasil!');
+            loginView.classList.remove('hidden');
+            registerView.classList.add('hidden');
+        });
+
+        const logout = () => {
+            sessionStorage.removeItem('loggedInUser');
+            adminApp.classList.add('hidden');
+            studentApp.classList.add('hidden');
+            authContainer.classList.remove('hidden');
+        };
+
+        document.getElementById('admin-logout-btn').addEventListener('click', logout);
+        
+        // --- ADMIN APP LOGIC ---
+        const adminNavItems = document.querySelectorAll('.admin-nav-item');
+        const adminViews = document.querySelectorAll('.admin-view');
+        const adminHeaderTitle = document.getElementById('admin-header-title');
+
+        const showAdminApp = () => {
+            authContainer.classList.add('hidden');
+            adminApp.classList.remove('hidden');
+            renderAdminDashboard();
+            renderAllAdminViews();
+        };
+
+        const renderAllAdminViews = () => {
+            renderUserManagement();
+            renderLoanRequests();
+            renderInventory();
+            renderReports();
+        };
+
+        adminNavItems.forEach(item => {
+            item.addEventListener('click', e => {
+                e.preventDefault();
+                const viewName = item.dataset.view;
+                adminNavItems.forEach(nav => nav.classList.remove('active'));
+                adminViews.forEach(view => view.classList.add('hidden'));
+                item.classList.add('active');
+                document.getElementById(`${viewName}-view`).classList.remove('hidden');
+                adminHeaderTitle.textContent = item.querySelector('span').textContent;
+            });
+        });
+
+        // Dashboard
+        const renderAdminDashboard = () => {
+            document.getElementById('metric-requests').textContent = JSON.parse(localStorage.getItem('peminjaman')).filter(p => p.status === 'Pending').length;
+            document.getElementById('metric-users').textContent = JSON.parse(localStorage.getItem('users')).length;
+            document.getElementById('metric-inventory').textContent = JSON.parse(localStorage.getItem('inventory')).length;
+            document.getElementById('metric-issues').textContent = 0; // Placeholder
+        };
+        
+        // User Management
+        const renderUserManagement = () => {
+            const users = JSON.parse(localStorage.getItem('users'));
+            const container = document.getElementById('users-table-container');
+            container.innerHTML = `<table class="w-full text-left"><thead><tr class="border-b"><th class="p-2">Nama</th><th>Username</th><th>Peran</th><th>Aksi</th></tr></thead><tbody>
+                ${users.map(user => `
+                    <tr class="border-b">
+                        <td class="p-2">${user.nama}</td><td>${user.nim}</td><td>${user.role}</td>
+                        <td><button class="text-indigo-600 hover:underline" onclick="resetPassword('${user.nim}')">Reset Password</button></td>
+                    </tr>`).join('')}
+            </tbody></table>`;
+        };
+        window.resetPassword = (nim) => {
+            if(confirm(`Yakin ingin reset password untuk user ${nim}? Password akan menjadi "123456".`)){
+                const users = JSON.parse(localStorage.getItem('users'));
+                const userIndex = users.findIndex(u => u.nim === nim);
+                if (userIndex > -1) {
+                    users[userIndex].password = '123456';
+                    localStorage.setItem('users', JSON.stringify(users));
+                    alert('Password berhasil direset.');
+                    renderUserManagement();
+                }
+            }
+        };
+
+        // Loan Requests
+        const renderLoanRequests = () => {
+             // Mock data for requests
+            const requests = [
+                { id: 1, userName: 'Budi Mahasiswa', lab: 'Lab Pemrograman 1', date: '2025-09-11', time: '13:00-15:00', status: 'Pending' }
+            ];
+            const list = document.getElementById('requests-list');
+            list.innerHTML = requests.map(r => `
+                <div class="bg-white p-4 rounded-lg shadow flex justify-between items-center">
+                    <div>
+                        <p class="font-bold">${r.userName} - <span class="font-normal">${r.lab}</span></p>
+                        <p class="text-sm text-gray-600">${r.date} | ${r.time}</p>
+                    </div>
+                    <div class="space-x-2">
+                        <button class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">Approve</button>
+                        <button class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm">Reject</button>
+                    </div>
+                </div>
+            `).join('');
+            if(requests.length === 0) list.innerHTML = `<p class="text-center text-gray-500">Tidak ada pengajuan baru.</p>`;
+        };
+
+        // Inventory
+        const renderInventory = () => {
+             const inventory = JSON.parse(localStorage.getItem('inventory'));
+             const container = document.getElementById('inventory-table-container');
+             container.innerHTML = `<table class="w-full text-left"><thead><tr class="border-b"><th class="p-2">Nama Alat</th><th>Jumlah</th><th>Kondisi</th></tr></thead><tbody>
+                ${inventory.map(item => `
+                    <tr class="border-b"><td class="p-2">${item.name}</td><td>${item.qty}</td><td><span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">${item.condition}</span></td></tr>
+                `).join('')}
+             </tbody></table>`;
+        };
+
+        // Reports
+        const renderReports = () => {
+            const container = document.getElementById('reports-table-container');
+            container.innerHTML = `
+                <h2 class="text-2xl font-bold mb-4">Laporan Peminjaman Lab</h2>
+                <p class="mb-4">Periode: 1 Sep 2025 - 10 Sep 2025</p>
+                <table class="w-full text-left"><thead><tr class="border-b"><th class="p-2">Tanggal</th><th>Nama</th><th>Lab</th><th>Waktu</th><th>Status</th></tr></thead>
+                <tbody>
+                    <tr class="border-b"><td class="p-2">2025-09-10</td><td>Budi Mahasiswa</td><td>Lab Pemrograman 1</td><td>09:00-11:00</td><td>Disetujui</td></tr>
+                </tbody></table>`;
+        };
+
+        document.getElementById('print-report-btn').addEventListener('click', () => { window.print(); });
+
+        // --- INITIAL CHECK ---
+        const checkLoginStatus = () => {
+            const userJson = sessionStorage.getItem('loggedInUser');
+            if (userJson) {
+                const user = JSON.parse(userJson);
+                if (user.role === 'Operator') showAdminApp();
+                else { /* showStudentApp(); */ }
+            } else {
+                authContainer.classList.remove('hidden');
+            }
+        };
+
         checkLoginStatus();
     });
     </script>
